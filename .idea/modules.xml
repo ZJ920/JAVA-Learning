@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Advanced-Codes/Advanced-Codes.iml" filepath="$PROJECT_DIR$/Advanced-Codes/Advanced-Codes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Fundamentals-of-Java-master/Fundamentals-of-Java-master.iml" filepath="$PROJECT_DIR$/Fundamentals-of-Java-master/Fundamentals-of-Java-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/JAVA.iml" filepath="$PROJECT_DIR$/.idea/JAVA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibraryManagementSystem/LibraryManagementSystem.iml" filepath="$PROJECT_DIR$/LibraryManagementSystem/LibraryManagementSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/christmasTree/christmasTree.iml" filepath="$PROJECT_DIR$/christmasTree/christmasTree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stoneSmazeGame/stoneSmazeGame.iml" filepath="$PROJECT_DIR$/stoneSmazeGame/stoneSmazeGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/俄罗斯方块/俄罗斯方块.iml" filepath="$PROJECT_DIR$/俄罗斯方块/俄罗斯方块.iml" />
+      <module fileurl="file://$PROJECT_DIR$/圣诞树/圣诞树.iml" filepath="$PROJECT_DIR$/圣诞树/圣诞树.iml" />
+    </modules>
+  </component>
+</project>
