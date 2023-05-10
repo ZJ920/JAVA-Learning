@@ -8,7 +8,7 @@ public class doubleNum {
         double b = 0.2;
         System.out.println(a + b);
 
-        String s = "10,20,30,40,50";
+        String s = "60,20,30,40,50";
         String[] sArr = s.split(",");
         for (int i = 0; i < sArr.length; i++) {
             System.out.print(sArr[i] + " ");

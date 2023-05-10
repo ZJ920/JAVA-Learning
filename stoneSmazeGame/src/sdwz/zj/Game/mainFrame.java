@@ -29,12 +29,12 @@ public class mainFrame extends JFrame implements KeyListener {
         init();//设置窗口
         initData();//打乱数字顺序
         printView();//加载图片
-        this.addKeyListener(this);//移动业务
+        this.addKeyListener(this);//移动业务（this可省略）
         /*
         this.addKeyListener(this)：
         mainJFrame继承了JFrame类和KeyListener接口
         所以mainJFrame分别是JFrame类和KeyListener接口的窗口类和实现类
-        所以使用this调用JFrame的addKeyListener方法，将自己当作KeyListener的实现类（this）传参过去
+        所以使用this调用JFrame（继承于前几个父类：Component）的addKeyListener方法，将自己当作KeyListener的实现类（this）传参过去
         添加指定的按键侦听器，以接收发自此组件（mainFrame继承了JFrame，所以它就是窗口组件）的按键事件。
         如果 l 为 null，则不会抛出异常并且不执行动作。
          */

@@ -1,4 +1,4 @@
-package ¶íÂŞË¹·½¿é;
+package ä¿„ç½—æ–¯æ–¹å—;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class CommunicateView extends JPanel{
 
 	/**
-	 * Ë«ÈËÄ£Ê½ÖĞ¿ØÖÆ¹Û²ì¶Ô·½Õ½¿öÃæ°åµÄÀà
+	 * åŒäººæ¨¡å¼ä¸­æ§åˆ¶è§‚å¯Ÿå¯¹æ–¹æˆ˜å†µé¢æ¿çš„ç±»
 	 */
 	private static final long serialVersionUID = 4L;
 	private Image img;
@@ -21,7 +21,7 @@ public class CommunicateView extends JPanel{
 		this.setPreferredSize(new Dimension(x,y));
 	}
 	
-	//»æÖÆ¶Ô·½Õ½¿ö
+	//ç»˜åˆ¶å¯¹æ–¹æˆ˜å†µ
 	public void setImage(BufferedImage img)
 	{
 		this.img = img;

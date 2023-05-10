@@ -35,7 +35,7 @@ public class ReaderListen2 implements ActionListener {
     	con = GetDBConnection.connectDB("student","root","162278");
     	String sqlStr ="insert into reader values(?,?,?,?)";
     	if(xm3.length()==0||sm3.length()==0||rq3.length()==0||xh3.length()==0) {
-			JOptionPane.showMessageDialog(null,"ÇëÌîĞ´½èÔÄÕßĞÅÏ¢£¡","ÌáÊ¾¶Ô»°¿ò",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"è¯·å¡«å†™å€Ÿé˜…è€…ä¿¡æ¯ï¼","æç¤ºå¯¹è¯æ¡†",JOptionPane.WARNING_MESSAGE);
 		}else{
     	    try {
     		    preSql = con.prepareStatement(sqlStr);
@@ -47,7 +47,7 @@ public class ReaderListen2 implements ActionListener {
     		    con.close();
     	    }
     	    catch(SQLException e2) {}
-    	    JOptionPane.showMessageDialog(null,"½èÔÄÕßĞÅÏ¢²åÈë³É¹¦","ÌáÊ¾¶Ô»°¿ò",JOptionPane.PLAIN_MESSAGE);
+    	    JOptionPane.showMessageDialog(null,"å€Ÿé˜…è€…ä¿¡æ¯æ’å…¥æˆåŠŸ","æç¤ºå¯¹è¯æ¡†",JOptionPane.PLAIN_MESSAGE);
     	    b.dispose();
 		}
     }

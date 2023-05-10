@@ -17,6 +17,8 @@ public class equalsTest {
         //打印ArrayList集合也是重写了toString方法
         System.out.println(stu1);
 
+        System.out.println(Objects.equals(stu1,stu2));
         System.out.println(Objects.equals(stu3,stu2));
+
     }
 }
