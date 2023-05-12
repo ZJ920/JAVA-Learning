@@ -32,7 +32,9 @@ public class CalendarDemo {
         c.add(Calendar.YEAR, -1);
 
         System.out.println(c.get(Calendar.YEAR));
+        System.out.println("---------------------------------");
         setMethod();
+        System.out.println("---------------------------------");
         getMethod();
 
     }
@@ -41,7 +43,8 @@ public class CalendarDemo {
         Calendar c = Calendar.getInstance();
 
         c.set(Calendar.YEAR, 2022);
-        c.set(2008,8,8);
+        System.out.println(c.get(Calendar.YEAR));
+        c.set(2023,5,12);
 
         System.out.println(c.get(Calendar.YEAR));
     }
@@ -57,8 +60,8 @@ public class CalendarDemo {
         System.out.println(year);
 
         // 注意Calendar类的月份是 0~11, 想要获取常规的月份, 需要对结果 + 1操作
-        int month = c.get(Calendar.MONTH);
-        System.out.println(month + 1);
+        int month = c.get(Calendar.MONTH) + 1;
+        System.out.println(month);
 
         int day = c.get(Calendar.DAY_OF_MONTH);
         System.out.println(day);
