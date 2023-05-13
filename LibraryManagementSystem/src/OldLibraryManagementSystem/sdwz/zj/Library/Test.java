@@ -1,6 +1,7 @@
 package OldLibraryManagementSystem.sdwz.zj.Library;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Test extends JFrame{
 	//JPanel p1,p2,p3,p4,p5;//可添加组件的面板 默认FlowLayout布局
@@ -39,8 +40,8 @@ public class Test extends JFrame{
 		quxiao=new JButton("退出");
 		quxiao.setBounds(300,240,120,40);//添加“取消”按钮并设置位置和大小
 
-        
-		add(yhm);
+		Container container = super.getContentPane();
+		container.add(yhm);
 		add(yhm1);
 		add(mm);
 		add(mm1);
