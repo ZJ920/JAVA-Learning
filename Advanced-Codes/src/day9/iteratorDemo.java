@@ -1,6 +1,7 @@
 package day9;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -27,9 +28,13 @@ public class iteratorDemo {
         System.out.println("-------------------------");
         //增强for
         int[] arr = {1,2,3,4,5,6,7,8,9};
+
         for (int i : arr) {
             System.out.print(i+" ");
         }
+        System.out.println("-------------Arrays------------");
+        int[] arr1 = {1,2,3,4,5,6};
+        System.out.println(Arrays.equals(arr,arr1));
 
     }
 
