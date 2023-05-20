@@ -2,7 +2,7 @@ package day9;
 
 import java.util.Objects;
 
-public class Student {
+public class Student implements Comparable<Student>{
     private String name;
     private int age;
 
@@ -47,5 +47,10 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(name, age);
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        return this.getAge()-o.getAge();
     }
 }
