@@ -3,6 +3,7 @@ package OldLibraryManagementSystem.sdwz.zj.Library;
 import java.awt.event.*;
 import javax.swing.*;
 public class Reader extends JFrame implements ActionListener {
+	@Override
 	public void actionPerformed (ActionEvent e) {
 			JLabel xm,xh,sm,rq,gs;
 			JTextField xm1,sm1,rq1,xh1;

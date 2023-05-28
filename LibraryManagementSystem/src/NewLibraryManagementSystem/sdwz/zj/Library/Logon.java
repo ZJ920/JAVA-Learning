@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class Logon extends JFrame {
+public class Logon extends JFrame implements ActionListener{
     //JPanel p1,p2,p3,p4,p5;//可添加组件的面板 默认FlowLayout布局
     JLabel a, userName, password;//标签 为用户提供信息
     JTextField userName1;//允许用户在文本框输入单行文本
@@ -94,10 +94,11 @@ public class Logon extends JFrame {
 
     //按登录键登录
     private void toLogon(Logon release) {
-        submit.addActionListener(new ActionListener() {
+        submit.addActionListener(this);
+    }
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
                 String userName2 = userName1.getText().trim();
                 String password2 = password1.getText().trim();
@@ -137,7 +138,6 @@ public class Logon extends JFrame {
                         password1.setText(null);
                     }
                 }
-            }
-        });
+
     }
 }

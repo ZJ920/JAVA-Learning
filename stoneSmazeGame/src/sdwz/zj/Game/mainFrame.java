@@ -55,7 +55,7 @@ public class mainFrame extends JFrame implements KeyListener {
 
     //界面初始化
     private void init() {
-        super.setTitle("石头迷阵单机版v1.0");
+        this.setTitle("石头迷阵单机版v1.0");
         super.setSize(514, 595);
         super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         super.setAlwaysOnTop(true);
@@ -125,7 +125,7 @@ public class mainFrame extends JFrame implements KeyListener {
         button.setFocusable(false);//JButton比较特殊，创建按钮后焦点默认在按钮上，需要取消焦点，否则键盘监听会失灵
         button.setBounds(350,20,100,20);
 
-        Container container = super.getContentPane();
+        Container container = this.getContentPane();
         container.add(button);
         //或者：
         //super.getContentPane().add(button);
