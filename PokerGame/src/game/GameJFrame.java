@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 public class GameJFrame extends JFrame implements ActionListener {
 
@@ -97,34 +98,80 @@ public class GameJFrame extends JFrame implements ActionListener {
             //点击抢地主
             time[1].setText("抢地主");
             ArrayList<Poker> player1 = playerList.get(1);
+
+            //深拷贝地主牌
+            ArrayList<Poker> lordList1 = new ArrayList<>();
+            Iterator it = lordList.iterator();
+            while (it.hasNext()){
+                Poker poker  = (Poker) it.next();
+                Poker poker1 = new Poker(poker.getName(),poker.isUp(),poker.isCanClick(),poker.isClicked());
+                poker1.turnFront();
+                lordList1.add(poker1);
+            }
+
+            for (int i = 0; i < lordList1.size(); i++) {
+                lordList1.get(i).setLocation(270+(75*i),10);
+                lordList1.get(i).setVisible(true);
+                container.add(lordList1.get(i));
+                //move(lordList1.get(i),lordList1.get(i).getLocation(),new Point(270 + (75 * i), 10));
+                //container.setComponentZOrder(lordList1.get(i), 0);
+            }
+
+
+            for (int i = 0;i<lordList.size();i++){
+                lordList.get(i).setCanClick(true);//设置地主牌可点击
+                lordList.get(i).turnFront();
+            }
+
             player1.addAll(lordList);
             lordList.clear();
             order(playerList.get(1));
-            for (Poker poker : player1) {
-                poker.turnFront();
-            }
-            rePosition(playerList.get(1),1);
+
+            landlord[0].setVisible(false);//设置抢地主按钮不可见
+            landlord[1].setVisible(false);//设置不抢按钮不可见
+            publishCard[0].setVisible(true);//设置出牌按钮可见
+            rePosition(playerList.get(1),1);//将玩家1牌的集合重新摆放
+            //rePosition(lordList1,3);//将地主牌的集合重新摆放
+
+            //创建抢地主的按钮
+            JButton robBut = new JButton("抢地主");
+            //设置位置
+            robBut.setBounds(320, 200, 75, 20);
+            //添加点击事件
+            robBut.addActionListener(this);
+            //设置隐藏
+            robBut.setVisible(true);
+            //添加到界面中
+            container.add(robBut);
         } else if (e.getSource() == landlord[1]) {
             //点击不抢
             time[1].setText("不抢");
+            for (int i = 0;i<lordList.size();i++){
+                lordList.get(i).turnFront();//显示底牌
+            }
+            landlord[0].setVisible(false);//设置抢地主按钮不可见
+            landlord[1].setVisible(false);//设置不抢按钮不可见
         } else if (e.getSource() == publishCard[1]) {
             //点击不要
             time[1].setText("不要");
+            publishCard[1].setVisible(false);
         } else if (e.getSource() == publishCard[0]) {
             time[1].setText("出牌");
+            publishCard[0].setVisible(false);
         }
     }
 
     //初始化牌（准备牌，洗牌，发牌）
     public void initCard() {
         //准备牌
-        //把所有的牌，包括大小王都添加到牌盒cardList当中
-        for (int i = 1; i <= 5; i++) {
+        //把所有的牌，包括大小王都添加到牌盒pokerList当中
+
+        for (int i = 1;i <= 5;i ++){
             for (int j = 1; j <= 13; j++) {
-                if ((i == 5) && (j > 2)) {
+                if ((i == 5) && (j > 2)){//5-1 5-2大小王 没有5-3以上
                     break;
-                } else {
-                    Poker poker = new Poker(i + "-" + j, false);
+                }else {
+                    Poker poker = new Poker(i+"-"+j,false);
                     poker.setLocation(350, 150);
                     pokerList.add(poker);
                     container.add(poker);
@@ -140,34 +187,29 @@ public class GameJFrame extends JFrame implements ActionListener {
         ArrayList<Poker> player1 = new ArrayList<>();
         ArrayList<Poker> player2 = new ArrayList<>();
 
+
+
         //发牌
-        for (int i = 0; i < pokerList.size(); i++) {
-            //获取当前遍历的牌
+        for (int i = 0;i<pokerList.size();i++){
             Poker poker = pokerList.get(i);
 
-            //发三张底牌
-            if (i <= 2) {
-                //把底牌添加到集合中
+            //三张底牌
+            if (i <= 2){
                 lordList.add(poker);
-                move(poker, poker.getLocation(), new Point(270 + (75 * i), 10));
+                move(poker,poker.getLocation(),new Point(270 + (75 * i), 10));
                 continue;
             }
-
-            //给三个玩家发牌
-            if (i % 3 == 0) {
-                //给左边的电脑发牌
-                move(poker, poker.getLocation(), new Point(50, 60 + i * 5));
+            if ((i % 3) == 0){
                 player0.add(poker);
-            } else if (i % 3 == 1) {
-                //给中间的自己发牌
-                move(poker, poker.getLocation(), new Point(180 + i * 7, 450));
+                move(poker,poker.getLocation(),new Point(50, 60 + i * 5));
+            }else if ((i % 3) == 1){
+                poker.turnFront();//展示自己的牌
+                poker.setCanClick(true);
                 player1.add(poker);
-                //把自己的牌展示正面
-                poker.turnFront();
-            } else if (i % 3 == 2) {
-                //给右边的电脑发牌
-                move(poker, poker.getLocation(), new Point(700, 60 + i * 5));
+                move(poker,poker.getLocation(),new Point(180 + i * 7, 450));
+            }else if ((i % 3) == 2){
                 player2.add(poker);
+                move(poker,poker.getLocation(),new Point(700, 60 + i * 5));
             }
 
             //把三个装着牌的小集合放到大集合中方便管理
@@ -177,13 +219,13 @@ public class GameJFrame extends JFrame implements ActionListener {
 
             //把当前的牌至于最顶端，这样就会有牌依次错开且叠起来的效果
             container.setComponentZOrder(poker, 0);
-
         }
 
         //排序
         for (int i = 0; i < 3; i++) {
             order(playerList.get(i));
         }
+
 
     }
 
@@ -251,6 +293,7 @@ public class GameJFrame extends JFrame implements ActionListener {
         return value;
     }
 
+
     //添加组件
     public void initView() {
         //创建抢地主的按钮
@@ -307,9 +350,9 @@ public class GameJFrame extends JFrame implements ActionListener {
             time[i].setVisible(false);
             container.add(time[i]);
         }
-        time[0].setBounds(140, 230, 60, 20);
-        time[1].setBounds(374, 360, 60, 20);
-        time[2].setBounds(620, 230, 60, 20);
+        time[0].setBounds(140, 230, 70, 20);
+        time[1].setBounds(374, 360, 70, 20);
+        time[2].setBounds(620, 230, 70, 20);
 
 
         //创建地主图标
@@ -384,6 +427,10 @@ public class GameJFrame extends JFrame implements ActionListener {
             p.x = 700;
             p.y = (450 / 2) - (list.size() + 1) * 15 / 2;
         }
+//        if (flag == 3) {
+//            p.x = (800 / 2) - (list.size() + 1) * 21 / 2;
+//            p.y = 10;
+//        }
         int len = list.size();
         for (int i = 0; i < len; i++) {
             Poker poker = list.get(i);
