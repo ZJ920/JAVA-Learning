@@ -14,6 +14,7 @@ public class test {
             arr.add((char) ('A'+i));
             arr.add((char) ('a'+i));
         }
+
         for (int i = 0; i < arr.size(); i++) {
             if (i < 10){
                 arr1.add((Integer.toString(i)));
@@ -32,3 +33,4 @@ public class test {
 	System.out.println();
     }
 }
+
