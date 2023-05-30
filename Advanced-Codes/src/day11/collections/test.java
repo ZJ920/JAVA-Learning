@@ -29,5 +29,6 @@ public class test {
             code = code + arr1.get(index);
         }
         System.out.println(code);
+	System.out.println();
     }
 }
