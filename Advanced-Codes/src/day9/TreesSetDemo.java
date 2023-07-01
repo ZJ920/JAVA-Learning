@@ -1,5 +1,6 @@
 package day9;
 
+import java.util.Comparator;
 import java.util.TreeSet;
 
 public class TreesSetDemo {
@@ -18,6 +19,13 @@ public class TreesSetDemo {
         tree.add(stu3);
         tree.add(stu4);
         tree.add(stu5);
+
+        TreeSet<String> treeSet = new TreeSet<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return 0;
+            }
+        });
 
         for(StudentTest stu : tree){
             System.out.println(stu);

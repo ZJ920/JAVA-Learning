@@ -18,6 +18,10 @@ public class Demo2 {
     //1.单列集合获取Stream流
     ArrayList<String> list = new ArrayList<>();
         Collections.addAll(list,"a","b","c","d","e");
+
+        Stream<String> stream = list.stream();
+        stream.filter(s -> s == "a").forEach(s -> System.out.println(s));
+        System.out.println("==============================================");
         //获取到一条流水线，并把集合中的数据放到流水线上
         Stream<String> stream1 = list.stream();
         //使用终结方法打印一下流水线上的所有数据

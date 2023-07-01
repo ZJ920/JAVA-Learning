@@ -6,6 +6,7 @@ public class test1 {
         b.show();
         b.method();
         new DuiXiang();
+
     }
 }
 interface A{
