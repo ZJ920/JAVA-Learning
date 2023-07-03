@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class mainFrame extends JFrame implements KeyListener {
+public class mainFrame extends JFrame{
     //继承了JFrame，所以JFrame的方法mainFrame都有，可以直接调用，super可以省略。
     private int column, row;//0.png（空位坐标）i-row j-column
     private int count;//统计步数
@@ -26,10 +26,23 @@ public class mainFrame extends JFrame implements KeyListener {
     };
     //构造方法，new对象时初始化数据。
     public mainFrame() {
+        KeyListener keyListener = new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();//接收键盘按键对应的int型代号
+                //System.out.println("keyCode:"+keyCode); 可以获取键盘录入的int型数值
+                move(keyCode);//上下左右移动方块
+                printView();
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {}
+            @Override
+            public void keyTyped(KeyEvent e) {}
+        };
         init();//设置窗口
         initData();//打乱数字顺序
         printView();//加载图片
-        this.addKeyListener(this);//移动业务（this可省略）
+        this.addKeyListener(keyListener);//移动业务（this可省略）
         /*
         this.addKeyListener(this)：
         mainJFrame继承了JFrame类和KeyListener接口
@@ -40,17 +53,17 @@ public class mainFrame extends JFrame implements KeyListener {
          */
         super.setVisible(true);//最后显示窗口
     }
-
+    ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            count = 0;
+            initData();
+            printView();
+        }
+    };
     //重新游戏
     private void newGame(JButton button) {
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                count = 0;
-                initData();
-                printView();
-            }
-        });
+        button.addActionListener(actionListener);
     }
 
     //界面初始化
@@ -136,15 +149,6 @@ public class mainFrame extends JFrame implements KeyListener {
         super.getContentPane().repaint();//移除和重新添加之后需要 刷新面板 才行
     }
 
-    @Override
-    //接收键盘按键输入
-    public void keyPressed(KeyEvent e) {
-        int keyCode = e.getKeyCode();//接收键盘按键对应的int型代号
-        //System.out.println("keyCode:"+keyCode); 可以获取键盘录入的int型数值
-        move(keyCode);//上下左右移动方块
-        printView();
-    }
-
     //上下左右移动方块
     private void move(int keyCode) {
         if (victory() == true){
@@ -228,12 +232,6 @@ public class mainFrame extends JFrame implements KeyListener {
     }
     //----------------------------------------------------------
     //暂时用不上的代码
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
     //----------------------------------------------------------
 }

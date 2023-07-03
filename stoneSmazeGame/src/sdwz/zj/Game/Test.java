@@ -4,6 +4,6 @@ package sdwz.zj.Game;
 public class Test {
     public static void main(String[] args){
 
-        mainFrame mainFrame = new mainFrame();
+        new mainFrame();
     }
 }
