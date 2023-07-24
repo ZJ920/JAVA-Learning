@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class ioTest1 {
     public static void main(String[] args) throws IOException {
+        //ture表示续写，不清空原有类容
         FileOutputStream fos = new FileOutputStream("Advanced-Codes\\src\\day16\\io\\a.txt",true);
         //fos.write(97);
         byte[] bytes = {97,98,99,100};
