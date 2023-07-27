@@ -4,7 +4,7 @@ import java.io.*;
 
 public class test5 {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Student stu = new Student("张三",23);
+        Student stu = new Student("张三",23,"南京");
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Advanced-Codes\\src\\day17\\io\\a.txt"));
 
         oos.writeObject(stu);
