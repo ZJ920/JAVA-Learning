@@ -1,20 +1,19 @@
 package com.itheima.ui;
 
+import cn.hutool.core.io.FileUtil;
 import com.itheima.domain.User;
 import com.itheima.util.CodeUtil;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LoginJFrame extends JFrame implements MouseListener {
 
     ArrayList<User> allUsers = new ArrayList<>();
+
 
     JButton login = new JButton();
     JButton register = new JButton();
@@ -27,33 +26,162 @@ public class LoginJFrame extends JFrame implements MouseListener {
     //正确的验证码
     JLabel rightCode = new JLabel();
 
-    public LoginJFrame() throws IOException {
-        //读取用户信息
-        getUser();
-
+    public LoginJFrame() {
+        //读取本地文件中的用户信息
+        readUserInfo();
         //初始化界面
         initJFrame();
-
         //在这个界面中添加内容
         initView();
-
         //让当前界面显示出来
         this.setVisible(true);
     }
-    //读取用户信息
-    private void getUser() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("puzzlegame\\userinfo.txt"));
 
-        String str;
-        while ((str = br.readLine()) != null){
-           String[] userInfo = str.split("&");
-           String userName = userInfo[0].split("=")[1];//zhangsan
-           String userPassword = userInfo[1].split("=")[1];//123
-           User user = new User(userName,userPassword);
-           allUsers.add(user);
+    //读取本地文件中的用户信息
+    private void readUserInfo() {
+        //1.读取数据
+        List<String> userInfoStrList = FileUtil.readUtf8Lines("C:\\Users\\alienware\\IdeaProjects\\basic-code\\puzzlegame\\userinfo.txt");
+        //2.遍历集合获取用户信息并创建User对象
+        for (String str : userInfoStrList) {
+            //username=zhangsan&password=123
+            String[] userInfoArr = str.split("&");
+            //0  username=zhangsan   1   password=123
+            String[] arr1 = userInfoArr[0].split("=");
+            String[] arr2 = userInfoArr[1].split("=");
+            User u = new User(arr1[1],arr2[1]);
+            allUsers.add(u);
+        }
+
+        System.out.println(allUsers);
+    }
+
+
+    //点击
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == login) {
+            System.out.println("点击了登录按钮");
+            //获取两个文本输入框中的内容
+            String usernameInput = username.getText();
+            String passwordInput = password.getText();
+            //获取用户输入的验证码
+            String codeInput = code.getText();
+
+            //创建一个User对象
+            User userInfo = new User(usernameInput, passwordInput);
+            System.out.println("用户输入的用户名为" + usernameInput);
+            System.out.println("用户输入的密码为" + passwordInput);
+
+            if (codeInput.length() == 0) {
+                showJDialog("验证码不能为空");
+            } else if (usernameInput.length() == 0 || passwordInput.length() == 0) {
+                //校验用户名和密码是否为空
+                System.out.println("用户名或者密码为空");
+                //调用showJDialog方法并展示弹框
+                showJDialog("用户名或者密码为空");
+            } else if (!codeInput.equalsIgnoreCase(rightCode.getText())) {
+                showJDialog("验证码输入错误");
+            } else if (contains(userInfo)) {
+                System.out.println("用户名和密码正确可以开始玩游戏了");
+                //关闭当前登录界面
+                this.setVisible(false);
+                //打开游戏的主界面
+                //需要把当前登录的用户名传递给游戏界面
+                new GameJFrame();
+            } else {
+                System.out.println("用户名或密码错误");
+                showJDialog("用户名或密码错误");
+            }
+        } else if (e.getSource() == register) {
+            System.out.println("点击了注册按钮");
+            //关闭当前的登录界面
+            this.setVisible(false);
+            //打开注册界面
+            new RegisterJFrame(allUsers);
+        } else if (e.getSource() == rightCode) {
+            System.out.println("更换验证码");
+            //获取一个新的验证码
+            String code = CodeUtil.getCode();
+            rightCode.setText(code);
         }
     }
 
+
+    //只创建一个弹框对象
+    JDialog jDialog = new JDialog();
+    //因为展示弹框的代码，会被运行多次
+    //所以，我们把展示弹框的代码，抽取到一个方法中。以后用到的时候，就不需要写了
+    //直接调用就可以了。
+    //展示弹框
+    public void showJDialog(String content) {
+        if(!jDialog.isVisible()){
+            //创建一个弹框对象
+            JDialog jDialog = new JDialog();
+            //给弹框设置大小
+            jDialog.setSize(200, 150);
+            //让弹框置顶
+            jDialog.setAlwaysOnTop(true);
+            //让弹框居中
+            jDialog.setLocationRelativeTo(null);
+            //弹框不关闭永远无法操作下面的界面
+            jDialog.setModal(true);
+
+            //创建Jlabel对象管理文字并添加到弹框当中
+            JLabel warning = new JLabel(content);
+            warning.setBounds(0, 0, 200, 150);
+            jDialog.getContentPane().add(warning);
+
+            //让弹框展示出来
+            jDialog.setVisible(true);
+        }
+    }
+
+    //按下不松
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getSource() == login) {
+            login.setIcon(new ImageIcon("puzzlegame\\image\\login\\登录按下.png"));
+        } else if (e.getSource() == register) {
+            register.setIcon(new ImageIcon("puzzlegame\\image\\login\\注册按下.png"));
+        }
+    }
+
+    //松开按钮
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (e.getSource() == login) {
+            login.setIcon(new ImageIcon("puzzlegame\\image\\login\\登录按钮.png"));
+        } else if (e.getSource() == register) {
+            register.setIcon(new ImageIcon("puzzlegame\\image\\login\\注册按钮.png"));
+        }
+    }
+
+    //鼠标划入
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    //鼠标划出
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    //判断用户在集合中是否存在
+    public boolean contains(User userInput){
+        for (int i = 0; i < allUsers.size(); i++) {
+            User rightUser = allUsers.get(i);
+            if(userInput.getUsername().equals(rightUser.getUsername()) && userInput.getPassword().equals(rightUser.getPassword())){
+                //有相同的代表存在，返回true，后面的不需要再比了
+                return true;
+            }
+        }
+        //循环结束之后还没有找到就表示不存在
+        return false;
+    }
+
+    //在这个界面中添加内容
     public void initView() {
         //1. 添加用户名文字
         JLabel usernameText = new JLabel(new ImageIcon("puzzlegame\\image\\login\\用户名.png"));
@@ -61,7 +189,6 @@ public class LoginJFrame extends JFrame implements MouseListener {
         this.getContentPane().add(usernameText);
 
         //2.添加用户名输入框
-
         username.setBounds(195, 134, 200, 30);
         this.getContentPane().add(username);
 
@@ -123,7 +250,7 @@ public class LoginJFrame extends JFrame implements MouseListener {
 
     }
 
-
+    //初始化界面
     public void initJFrame() {
         this.setSize(488, 430);//设置宽高
         this.setTitle("拼图游戏 V1.0登录");//设置标题
@@ -132,130 +259,4 @@ public class LoginJFrame extends JFrame implements MouseListener {
         this.setAlwaysOnTop(true);//置顶
         this.setLayout(null);//取消内部默认布局
     }
-
-
-
-    //点击
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == register){
-            System.out.println("点击了注册按钮");
-            this.setVisible(false);
-            new RegisterJFrame(allUsers);
-        }
-        if (e.getSource() == login) {
-            System.out.println("点击了登录按钮");
-            //获取两个文本输入框中的内容
-            String usernameInput = username.getText();
-            String passwordInput = password.getText();
-            //获取用户输入的验证码
-            String codeInput = code.getText();
-
-            //创建一个User对象
-            User userInfo = new User(usernameInput, passwordInput);
-            System.out.println("用户输入的用户名为" + usernameInput);
-            System.out.println("用户输入的密码为" + passwordInput);
-
-            if (codeInput.length() == 0) {
-                showJDialog("验证码不能为空");
-            } else if (usernameInput.length() == 0 || passwordInput.length() == 0) {
-                //校验用户名和密码是否为空
-                System.out.println("用户名或者密码为空");
-
-                //调用showJDialog方法并展示弹框
-                showJDialog("用户名或者密码为空");
-
-
-            } else if (!codeInput.equalsIgnoreCase(rightCode.getText())) {
-                showJDialog("验证码输入错误");
-            } else if (contains(userInfo)) {
-                System.out.println("用户名和密码正确可以开始玩游戏了");
-                //关闭当前登录界面
-                this.setVisible(false);
-                //打开游戏的主界面
-                //需要把当前登录的用户名传递给游戏界面
-                new GameJFrame();
-            } else {
-                System.out.println("用户名或密码错误");
-                showJDialog("用户名或密码错误");
-            }
-        } else if (e.getSource() == register) {
-            System.out.println("点击了注册按钮");
-        } else if (e.getSource() == rightCode) {
-            System.out.println("更换验证码");
-            //获取一个新的验证码
-            String code = CodeUtil.getCode();
-            rightCode.setText(code);
-        }
-    }
-
-
-    public void showJDialog(String content) {
-        //创建一个弹框对象
-        JDialog jDialog = new JDialog();
-        //给弹框设置大小
-        jDialog.setSize(200, 150);
-        //让弹框置顶
-        jDialog.setAlwaysOnTop(true);
-        //让弹框居中
-        jDialog.setLocationRelativeTo(null);
-        //弹框不关闭永远无法操作下面的界面
-        jDialog.setModal(true);
-
-        //创建Jlabel对象管理文字并添加到弹框当中
-        JLabel warning = new JLabel(content);
-        warning.setBounds(0, 0, 200, 150);
-        jDialog.getContentPane().add(warning);
-
-        //让弹框展示出来
-        jDialog.setVisible(true);
-    }
-
-    //按下不松
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (e.getSource() == login) {
-            login.setIcon(new ImageIcon("puzzlegame\\image\\login\\登录按下.png"));
-        } else if (e.getSource() == register) {
-            register.setIcon(new ImageIcon("puzzlegame\\image\\login\\注册按下.png"));
-        }
-    }
-
-
-    //松开按钮
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == login) {
-            login.setIcon(new ImageIcon("puzzlegame\\image\\login\\登录按钮.png"));
-        } else if (e.getSource() == register) {
-            register.setIcon(new ImageIcon("puzzlegame\\image\\login\\注册按钮.png"));
-        }
-    }
-
-    //鼠标划入
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    //鼠标划出
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    //判断用户在集合中是否存在
-    public boolean contains(User userInput){
-        for (int i = 0; i < allUsers.size(); i++) {
-            User rightUser = allUsers.get(i);
-            if(userInput.getUsername().equals(rightUser.getUsername()) && userInput.getPassword().equals(rightUser.getPassword())){
-                //有相同的代表存在，返回true，后面的不需要再比了
-                return true;
-            }
-        }
-        //循环结束之后还没有找到就表示不存在
-        return false;
-    }
-
-
 }

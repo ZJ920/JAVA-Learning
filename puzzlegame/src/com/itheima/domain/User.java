@@ -15,6 +15,7 @@ public class User {
 
     /**
      * 获取
+     *
      * @return username
      */
     public String getUsername() {
@@ -23,6 +24,7 @@ public class User {
 
     /**
      * 设置
+     *
      * @param username
      */
     public void setUsername(String username) {
@@ -31,6 +33,7 @@ public class User {
 
     /**
      * 获取
+     *
      * @return password
      */
     public String getPassword() {
@@ -39,14 +42,15 @@ public class User {
 
     /**
      * 设置
+     *
      * @param password
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @Override
+
     public String toString() {
-        return "username="+username+"&"+"password="+password;
+        return "username=" + username + "&password=" + password;
     }
 }

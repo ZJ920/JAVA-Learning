@@ -1,17 +1,16 @@
 package com.itheima.ui;
 
+import cn.hutool.core.io.FileUtil;
 import com.itheima.domain.User;
+
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class RegisterJFrame extends JFrame implements MouseListener {
 
-    ArrayList<User> allUser = new ArrayList<>();
+    ArrayList<User> allUsers;
 
     //提升三个输入框的变量的作用范围，让这三个变量可以在本类中所有方法里面可以使用。
     JTextField username = new JTextField();
@@ -22,9 +21,8 @@ public class RegisterJFrame extends JFrame implements MouseListener {
     JButton submit = new JButton();
     JButton reset = new JButton();
 
-
-    public RegisterJFrame(ArrayList<User> allUser) {
-        this.allUser = allUser;
+    public RegisterJFrame(ArrayList<User> allUsers) {
+        this.allUsers = allUsers;
         initFrame();
         initView();
         setVisible(true);
@@ -32,42 +30,73 @@ public class RegisterJFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //点击注册按钮
-        if (e.getSource() == submit){
-            if (username.getText().length() == 0 || password.getText().length() == 0 || rePassword.getText().length() == 0){
-                showDialog("用户名或密码不能为空");
+        if(e.getSource() == submit){
+            //点击了注册按钮
+            //1.用户名，密码不能为空
+            if(username.getText().length() == 0 || password.getText().length() == 0 || rePassword.getText().length() == 0){
+                showDialog("用户名和密码不能为空");
                 return;
             }
-            if (!password.getText().equals(rePassword.getText())){
+            //2.判断两次密码输入是否一致
+            if(!password.getText().equals(rePassword.getText())){
                 showDialog("两次密码输入不一致");
                 return;
             }
-            if (containsUsername(username.getText())){
-                showDialog("用户名已存在，请重新输入");
+            //3.判断用户名和密码的格式是否正确
+            if(!username.getText().matches("[a-zA-Z0-9]{4,16}")){
+                showDialog("用户名不符合规则");
                 return;
             }
-            //注册成功，添加用户
-            allUser.add(new User(username.getText(),password.getText()));
-            try {
-                BufferedWriter bw = new BufferedWriter(new FileWriter("puzzlegame\\userinfo.txt"));
-                for (User user : allUser){
-                    bw.write(user.toString());
-                }
-                bw.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if(!password.getText().matches("\\S*(?=\\S{6,})(?=\\S*\\d)(?=\\S*[a-z])\\S*")){
+                showDialog("密码不符合规则，至少包含1个小写字母，1个数字，长度至少6位");
+                return;
             }
+            //4.判断用户名是否已经重复
+            if(containsUsername(username.getText())){
+                showDialog("用户名已经存在，请重新输入");
+                return;
+            }
+            //5.添加用户
+            allUsers.add(new User(username.getText(),password.getText()));
+            //6.写入文件
+            FileUtil.writeLines(allUsers,"C:\\Users\\alienware\\IdeaProjects\\basic-code\\puzzlegame\\userinfo.txt","UTF-8");
+            //7.提示注册成功
+            showDialog("注册成功");
+            //关闭注册界面，打开登录界面
+            this.setVisible(false);
+            new LoginJFrame();
 
+
+        }else if(e.getSource() == reset){
+            //点击了重置按钮
+            //清空三个输入框
+            username.setText("");
+            password.setText("");
+            rePassword.setText("");
         }
     }
-    private boolean containsUsername(String username){
-        for (User user : allUser){
-            if (username.equals(user.getUsername())){
-                return true;//用户名已存在
+
+
+    /*
+    * 作用：
+    *       判断username在集合中是否存在
+    * 参数：
+    *       用户名
+    * 返回值：
+    *       true：存在
+    *       false：不存在
+    *
+    * */
+    public boolean containsUsername(String username){
+        for (User u : allUsers) {
+            if(u.getUsername().equals(username)){
+                return true;
             }
         }
-        return false;//用户名不存在
+        return false;
     }
+
+
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == submit) {
