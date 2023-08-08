@@ -21,6 +21,8 @@ public class MyTread1 extends Thread{
                         Thread.sleep(100);
                 }else {
                     break;
+
+
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
