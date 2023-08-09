@@ -17,8 +17,8 @@ public class Cook extends Thread {
                     if (Desk.food != 0) {
                         //有食物：等待
                         try {
-                            Desk.lock.wait();
                             System.out.println("厨师等待...");
+                            Desk.lock.wait();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
