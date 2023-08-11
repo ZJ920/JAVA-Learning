@@ -1,20 +1,29 @@
 package day20.inetaddress;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
-public class Demo2{
+public class Demo2 {
     public static void main(String[] args) throws IOException {
-        DatagramSocket ds = new DatagramSocket();
+        DatagramSocket ds = new DatagramSocket(10086);
+        InetAddress address = null;//主机
+        int port = 0;//端口
+        String str = null;
 
-        String str = "hello";
-        byte[] bytes = str.getBytes();
-        InetAddress address = InetAddress.getByName("127.0.0.1");
-        int port = 8888;
-        DatagramPacket dp = new DatagramPacket(bytes,bytes.length,address,port);
+        while (true) {
+            //接收数据包
+            byte[] bytes = new byte[1024];
+            DatagramPacket dp = new DatagramPacket(bytes,bytes.length);
+            ds.receive(dp);//包装
 
-        ds.send(dp);
-
-        ds.close();
+            address = dp.getAddress();//
+            byte[] data = dp.getData();//数据(二进制数)
+            int len = dp.getLength();
+            port = dp.getPort();
+            str = new String(data,0,len);
+            System.out.println("主机："+address+".端口:"+port+"数据："+str);
+        }
     }
 }
